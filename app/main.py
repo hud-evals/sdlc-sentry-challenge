@@ -1,7 +1,31 @@
+import logging
+
+import sentry_sdk
 from fastapi import FastAPI
 
-from app.config import APP_NAME, APP_VERSION
+from app.config import (
+    APP_NAME,
+    APP_VERSION,
+    SENTRY_DSN,
+    SENTRY_ENVIRONMENT,
+    SENTRY_TRACES_SAMPLE_RATE,
+)
 from app.routers import organizations, tasks, users
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+
+# Initialize Sentry SDK
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        environment=SENTRY_ENVIRONMENT,
+        traces_sample_rate=SENTRY_TRACES_SAMPLE_RATE,
+        send_default_pii=True,
+    )
 
 app = FastAPI(
     title=APP_NAME,
