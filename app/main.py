@@ -10,6 +10,7 @@ from app.config import (
     SENTRY_ENVIRONMENT,
     SENTRY_TRACES_SAMPLE_RATE,
 )
+from app.middleware import ErrorHandlingMiddleware, RequestLoggingMiddleware
 from app.routers import organizations, tasks, users
 
 # Configure logging
@@ -32,6 +33,10 @@ app = FastAPI(
     version=APP_VERSION,
     description="A team task tracking API for managing organizations, users, and tasks.",
 )
+
+# Add middleware
+app.add_middleware(ErrorHandlingMiddleware)
+app.add_middleware(RequestLoggingMiddleware)
 
 # Include routers
 app.include_router(users.router, prefix="/api/v1")
