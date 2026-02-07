@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.config import APP_NAME, APP_VERSION
-from app.routers import organizations, users
+from app.routers import organizations, tasks, users
 
 app = FastAPI(
     title=APP_NAME,
@@ -12,6 +12,7 @@ app = FastAPI(
 # Include routers
 app.include_router(users.router, prefix="/api/v1")
 app.include_router(organizations.router, prefix="/api/v1")
+app.include_router(tasks.router, prefix="/api/v1")
 
 
 @app.get("/")

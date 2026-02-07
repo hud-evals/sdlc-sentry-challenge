@@ -42,3 +42,32 @@ class UserResponse(UserBase):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+# Task schemas
+class TaskBase(BaseModel):
+    title: str
+    description: Optional[str] = None
+    status: Optional[str] = "open"
+
+
+class TaskCreate(TaskBase):
+    organization_id: int
+    assigned_to: Optional[int] = None
+
+
+class TaskUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    status: Optional[str] = None
+    assigned_to: Optional[int] = None
+
+
+class TaskResponse(TaskBase):
+    id: int
+    assigned_to: Optional[int] = None
+    organization_id: int
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)

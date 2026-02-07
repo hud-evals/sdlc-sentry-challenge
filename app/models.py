@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from app.database import Base
@@ -17,6 +17,7 @@ class Organization(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     users = relationship("User", back_populates="organization")
+    tasks = relationship("Task", back_populates="organization")
 
     def __repr__(self):
         return f"<Organization(id={self.id}, name='{self.name}')>"
@@ -35,6 +36,26 @@ class User(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     organization = relationship("Organization", back_populates="users")
+    assigned_tasks = relationship("Task", back_populates="assignee")
 
     def __repr__(self):
         return f"<User(id={self.id}, username='{self.username}')>"
+
+
+class Task(Base):
+    __tablename__ = "tasks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(500), nullable=False)
+    description = Column(Text, nullable=True)
+    status = Column(String(50), default="open")
+    assigned_to = Column(Integer, ForeignKey("users.id"), nullable=True)
+    organization_id = Column(Integer, ForeignKey("organizations.id"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    assignee = relationship("User", back_populates="assigned_tasks")
+    organization = relationship("Organization", back_populates="tasks")
+
+    def __repr__(self):
+        return f"<Task(id={self.id}, title='{self.title}')>"
