@@ -10,7 +10,7 @@ from alembic import context
 config = context.config
 
 # Read database URL from environment variable for flexible deployment
-database_url = os.getenv("POSTGRES_URL")
+database_url = os.getenv("POSTGRES_URI")
 if database_url:
     config.set_main_option("sqlalchemy.url", database_url)
 
