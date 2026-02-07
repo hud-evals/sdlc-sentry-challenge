@@ -49,6 +49,7 @@ class Task(Base):
     title = Column(String(500), nullable=False)
     description = Column(Text, nullable=True)
     status = Column(String(50), default="open")
+    priority = Column(String(20), default="medium")
     assigned_to = Column(Integer, ForeignKey("users.id"), nullable=True)
     organization_id = Column(Integer, ForeignKey("organizations.id"), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)

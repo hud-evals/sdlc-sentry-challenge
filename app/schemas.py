@@ -49,6 +49,7 @@ class TaskBase(BaseModel):
     title: str
     description: Optional[str] = None
     status: Optional[str] = "open"
+    priority: Optional[str] = "medium"
 
 
 class TaskCreate(TaskBase):
@@ -60,6 +61,7 @@ class TaskUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     status: Optional[str] = None
+    priority: Optional[str] = None
     assigned_to: Optional[int] = None
 
 

@@ -14,6 +14,7 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 def list_tasks(
     organization_id: Optional[int] = Query(None),
     status: Optional[str] = Query(None),
+    priority: Optional[str] = Query(None),
     assigned_to: Optional[int] = Query(None),
     skip: int = 0,
     limit: int = 100,
@@ -25,6 +26,8 @@ def list_tasks(
         query = query.filter(Task.organization_id == organization_id)
     if status:
         query = query.filter(Task.status == status)
+    if priority:
+        query = query.filter(Task.priority == priority)
     if assigned_to:
         query = query.filter(Task.assigned_to == assigned_to)
 
@@ -34,10 +37,12 @@ def list_tasks(
 
 @router.post("/", response_model=TaskResponse, status_code=201)
 def create_task(task: TaskCreate, db: Session = Depends(get_db)):
+    # Verify organization exists
     org = db.query(Organization).filter(Organization.id == task.organization_id).first()
     if not org:
         raise HTTPException(status_code=404, detail="Organization not found")
 
+    # Verify assignee exists if provided
     if task.assigned_to:
         user = db.query(User).filter(User.id == task.assigned_to).first()
         if not user:
