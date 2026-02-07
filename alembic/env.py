@@ -1,3 +1,4 @@
+import os
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -7,6 +8,11 @@ from alembic import context
 
 # this is the Alembic Config object
 config = context.config
+
+# Read database URL from environment variable for flexible deployment
+database_url = os.getenv("POSTGRES_URL")
+if database_url:
+    config.set_main_option("sqlalchemy.url", database_url)
 
 # Interpret the config file for Python logging
 if config.config_file_name is not None:

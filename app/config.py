@@ -1,7 +1,8 @@
 import os
 
 # Database configuration
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./dev.db")
+# Read from environment variable, fallback to SQLite for local development
+POSTGRES_URI = os.getenv("POSTGRES_URI", "sqlite:///./dev.db")
 
 # Application settings
 APP_NAME = os.getenv("APP_NAME", "Team Task Tracker")
