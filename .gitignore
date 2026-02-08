@@ -28,3 +28,6 @@ Thumbs.db
 
 # Scripts (not part of the app)
 scripts/
+
+# Sentry logs (served via MCP)
+sentry_logs/
